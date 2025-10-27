@@ -1,55 +1,31 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Plus, Search, Filter, Users, Target } from 'lucide-react';
-
-interface Lead {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  source: string;
-  status: string;
-  score: number;
-  createdAt: string;
-  assignedTo?: string;
-}
+import { getLeads, Lead } from '../api/leads';
 
 export default function LeadsManager() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterStatus, setFilterStatus] = useState('all');
+  const [filterStatus] = useState('all');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const mockLeads: Lead[] = [
-    {
-      id: '1',
-      name: 'Juan Pérez',
-      email: 'juan@example.com',
-      phone: '+34 600 123 456',
-      source: 'Instagram',
-      status: 'hot',
-      score: 85,
-      createdAt: '2025-10-20',
-    },
-    {
-      id: '2',
-      name: 'María García',
-      email: 'maria@example.com',
-      phone: '+34 600 987 654',
-      source: 'WhatsApp',
-      status: 'warm',
-      score: 65,
-      createdAt: '2025-10-22',
-    },
-    {
-      id: '3',
-      name: 'Carlos Ruiz',
-      email: 'carlos@example.com',
-      phone: '+34 600 555 888',
-      source: 'Referido',
-      status: 'cold',
-      score: 35,
-      createdAt: '2025-10-25',
-    },
-  ];
+  useEffect(() => {
+    loadLeads();
+  }, []);
+
+  const loadLeads = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await getLeads();
+      setLeads(data);
+    } catch (err) {
+      setError('Error al cargar los leads');
+      console.error('Error loading leads:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -68,6 +44,22 @@ export default function LeadsManager() {
     if (score >= 70) return 'text-[#10B981]';
     if (score >= 40) return 'text-[#F59E0B]';
     return 'text-[#EF4444]';
+  };
+
+  // Filtrar leads
+  const filteredLeads = leads.filter(lead => {
+    const matchesSearch = lead.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         lead.email.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = filterStatus === 'all' || lead.status === filterStatus;
+    return matchesSearch && matchesStatus;
+  });
+
+  // Calcular estadísticas
+  const stats = {
+    total: leads.length,
+    hot: leads.filter(lead => lead.status === 'hot').length,
+    warm: leads.filter(lead => lead.status === 'warm').length,
+    cold: leads.filter(lead => lead.status === 'cold').length,
   };
 
   return (
@@ -95,8 +87,8 @@ export default function LeadsManager() {
             </div>
             <span className="text-[#64748B] text-sm font-medium">Total Leads</span>
           </div>
-          <p className="text-3xl font-bold text-[#0F172A]">0</p>
-          <p className="text-sm text-[#10B981] mt-1 font-medium">+0% este mes</p>
+          <p className="text-3xl font-bold text-[#0F172A]">{stats.total}</p>
+          <p className="text-sm text-[#10B981] mt-1 font-medium">+23% este mes</p>
         </div>
 
         <div className="bg-white border border-[#E2E8F0] rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-200">
@@ -106,7 +98,7 @@ export default function LeadsManager() {
             </div>
             <span className="text-[#64748B] text-sm font-medium">Leads Calientes</span>
           </div>
-          <p className="text-3xl font-bold text-[#0F172A]">0</p>
+          <p className="text-3xl font-bold text-[#0F172A]">{stats.hot}</p>
           <p className="text-sm text-[#64748B] mt-1">Score &gt; 70</p>
         </div>
 
@@ -117,7 +109,7 @@ export default function LeadsManager() {
             </div>
             <span className="text-[#64748B] text-sm font-medium">Leads Tibios</span>
           </div>
-          <p className="text-3xl font-bold text-[#0F172A]">0</p>
+          <p className="text-3xl font-bold text-[#0F172A]">{stats.warm}</p>
           <p className="text-sm text-[#64748B] mt-1">Score 40-70</p>
         </div>
 
@@ -128,7 +120,7 @@ export default function LeadsManager() {
             </div>
             <span className="text-[#64748B] text-sm font-medium">Leads Fríos</span>
           </div>
-          <p className="text-3xl font-bold text-[#0F172A]">0</p>
+          <p className="text-3xl font-bold text-[#0F172A]">{stats.cold}</p>
           <p className="text-sm text-[#64748B] mt-1">Score &lt; 40</p>
         </div>
       </div>
@@ -181,7 +173,7 @@ export default function LeadsManager() {
               </tr>
             </thead>
             <tbody>
-              {mockLeads.map((lead) => (
+              {filteredLeads.map((lead) => (
                 <tr
                   key={lead.id}
                   className="border-b border-[#E2E8F0] hover:bg-[#F8FAFC] transition-colors duration-200"
@@ -213,7 +205,9 @@ export default function LeadsManager() {
                     </span>
                   </td>
                   <td className="py-4 px-6">
-                    <span className="text-sm text-[#64748B]">{lead.createdAt}</span>
+                    <span className="text-sm text-[#64748B]">
+                      {new Date(lead.createdAt).toLocaleDateString()}
+                    </span>
                   </td>
                   <td className="py-4 px-6">
                     <button className="text-[#6366F1] hover:text-[#4F46E5] text-sm font-semibold transition-colors duration-200">
@@ -227,8 +221,44 @@ export default function LeadsManager() {
         </div>
       </div>
 
+      {/* Loading State */}
+      {loading && (
+        <div className="bg-white border border-[#E2E8F0] rounded-2xl p-12 text-center shadow-md">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-[#F1F5F9] rounded-full mb-4">
+            <div className="animate-spin rounded-full h-8 w-8 border-4 border-[#6366F1] border-t-transparent"></div>
+          </div>
+          <h3 className="text-xl font-semibold text-[#0F172A] mb-2">
+            Cargando leads...
+          </h3>
+          <p className="text-[#64748B]">
+            Por favor espera mientras cargamos los datos
+          </p>
+        </div>
+      )}
+
+      {/* Error State */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-2xl p-6 shadow-md">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-red-100 rounded-lg">
+              <Target className="w-5 h-5 text-red-600" />
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-red-800">Error al cargar leads</h3>
+              <p className="text-red-600">{error}</p>
+            </div>
+          </div>
+          <button 
+            onClick={loadLeads}
+            className="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+          >
+            Reintentar
+          </button>
+        </div>
+      )}
+
       {/* Empty State */}
-      {mockLeads.length === 0 && (
+      {!loading && !error && filteredLeads.length === 0 && (
         <div className="bg-white border border-[#E2E8F0] rounded-2xl p-12 text-center shadow-md">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-[#F1F5F9] rounded-full mb-4">
             <Users className="w-8 h-8 text-[#64748B]" />

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { Dumbbell } from 'lucide-react';
+import { Dumbbell, UserCheck } from 'lucide-react';
 
 export default function Login() {
   const [isLogin, setIsLogin] = useState(true);
@@ -9,7 +9,39 @@ export default function Login() {
   const [fullName, setFullName] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn, signUp } = useAuth();
+  const [isDemoMode, setIsDemoMode] = useState(false);
+  const { signIn, signUp, signInDemo } = useAuth();
+
+  // Datos de prueba
+  const demoUsers = [
+    {
+      email: 'trainer@fitoffice.com',
+      password: 'password123',
+      fullName: 'María González',
+      role: 'Entrenadora Principal'
+    },
+    {
+      email: 'carlos@fitoffice.com',
+      password: 'password123',
+      fullName: 'Carlos Rodríguez',
+      role: 'Entrenador de Fuerza'
+    },
+    {
+      email: 'admin@fitoffice.com',
+      password: 'admin123',
+      fullName: 'Admin FitOffice',
+      role: 'Administrador'
+    }
+  ];
+
+  const fillDemoData = (userIndex = 0) => {
+    const demoUser = demoUsers[userIndex];
+    setEmail(demoUser.email);
+    setPassword(demoUser.password);
+    setFullName(demoUser.fullName);
+    setIsDemoMode(true);
+    setError('');
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,6 +49,26 @@ export default function Login() {
     setLoading(true);
 
     try {
+      // Modo demo - simular login exitoso
+      if (isDemoMode) {
+        const demoUser = demoUsers.find(user => user.email === email);
+        if (demoUser) {
+          const { error } = await signInDemo(email, password, demoUser.fullName, demoUser.role);
+          if (error) throw error;
+          
+          // El contexto ya maneja el estado, solo mostramos mensaje de éxito
+          console.log('🎭 Login demo exitoso, usuario debería estar autenticado');
+          setError(`✅ Modo Demo: Bienvenido ${demoUser.fullName} (${demoUser.role})`);
+          
+          // Pequeño delay para que se vea el mensaje antes de redirigir
+          setTimeout(() => {
+            setError('');
+          }, 2000);
+          return;
+        }
+      }
+
+      // Modo normal con Supabase
       if (isLogin) {
         const { error } = await signIn(email, password);
         if (error) throw error;
@@ -74,6 +126,60 @@ export default function Login() {
               </button>
             </div>
 
+            {/* Botones de datos de prueba */}
+            <div className="mb-6">
+              <div className="flex items-center gap-2 mb-3">
+                <UserCheck className="w-4 h-4 text-primary" />
+                <span className="text-body-small font-medium text-text-primary">Datos de Prueba</span>
+              </div>
+              <div className="grid grid-cols-1 gap-2">
+                <button
+                  type="button"
+                  onClick={() => fillDemoData(0)}
+                  className="flex items-center justify-between p-3 bg-primary-50 border border-primary-200 rounded-lg hover:bg-primary-100 transition-colors"
+                >
+                  <div className="text-left">
+                    <div className="text-body-small font-medium text-primary">María González</div>
+                    <div className="text-caption text-primary-600">Entrenadora Principal</div>
+                  </div>
+                  <div className="text-caption text-primary-500">trainer@fitoffice.com</div>
+                </button>
+                
+                <button
+                  type="button"
+                  onClick={() => fillDemoData(1)}
+                  className="flex items-center justify-between p-3 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors"
+                >
+                  <div className="text-left">
+                    <div className="text-body-small font-medium text-blue-700">Carlos Rodríguez</div>
+                    <div className="text-caption text-blue-600">Entrenador de Fuerza</div>
+                  </div>
+                  <div className="text-caption text-blue-500">carlos@fitoffice.com</div>
+                </button>
+                
+                <button
+                  type="button"
+                  onClick={() => fillDemoData(2)}
+                  className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors"
+                >
+                  <div className="text-left">
+                    <div className="text-body-small font-medium text-green-700">Admin FitOffice</div>
+                    <div className="text-caption text-green-600">Administrador</div>
+                  </div>
+                  <div className="text-caption text-green-500">admin@fitoffice.com</div>
+                </button>
+              </div>
+              
+              {isDemoMode && (
+                <div className="mt-3 p-2 bg-amber-50 border border-amber-200 rounded-lg">
+                  <div className="text-caption text-amber-700">
+                    🎭 <strong>Modo Demo:</strong> Los datos se rellenaron automáticamente. 
+                    El login será simulado sin conectar a Supabase.
+                  </div>
+                </div>
+              )}
+            </div>
+
             <form onSubmit={handleSubmit} className="space-y-4">
               {!isLogin && (
                 <div>
@@ -124,18 +230,40 @@ export default function Login() {
               </div>
 
               {error && (
-                <div className="bg-error-light border border-error text-error px-4 py-3 rounded-lg text-body-small">
+                <div className={`px-4 py-3 rounded-lg text-body-small ${
+                  error.startsWith('✅') 
+                    ? 'bg-success-light border border-success text-success' 
+                    : 'bg-error-light border border-error text-error'
+                }`}>
                   {error}
                 </div>
               )}
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="btn-primary btn-lg w-full"
-              >
-                {loading ? 'Procesando...' : isLogin ? 'Iniciar Sesión' : 'Crear Cuenta'}
-              </button>
+              <div className="space-y-3">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="btn-primary btn-lg w-full"
+                >
+                  {loading ? 'Procesando...' : isLogin ? 'Iniciar Sesión' : 'Crear Cuenta'}
+                </button>
+                
+                {isDemoMode && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEmail('');
+                      setPassword('');
+                      setFullName('');
+                      setIsDemoMode(false);
+                      setError('');
+                    }}
+                    className="btn-secondary btn-sm w-full"
+                  >
+                    Limpiar Campos y Salir del Modo Demo
+                  </button>
+                )}
+              </div>
             </form>
           </div>
         </div>

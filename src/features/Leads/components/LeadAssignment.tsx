@@ -1,48 +1,29 @@
+import { useState, useEffect } from 'react';
 import { Users, UserPlus, TrendingUp, Award } from 'lucide-react';
+import { getSalesReps } from '../api/leads';
 
 export default function LeadAssignment() {
-  const salesReps = [
-    {
-      id: '1',
-      name: 'Carlos Martínez',
-      avatar: 'CM',
-      assignedLeads: 15,
-      activeLeads: 8,
-      converted: 12,
-      conversionRate: 35,
-      color: 'bg-[#3B82F6]',
-    },
-    {
-      id: '2',
-      name: 'Ana García',
-      avatar: 'AG',
-      assignedLeads: 12,
-      activeLeads: 6,
-      converted: 15,
-      conversionRate: 42,
-      color: 'bg-[#8B5CF6]',
-    },
-    {
-      id: '3',
-      name: 'Miguel Rodríguez',
-      avatar: 'MR',
-      assignedLeads: 18,
-      activeLeads: 11,
-      converted: 9,
-      conversionRate: 28,
-      color: 'bg-[#10B981]',
-    },
-    {
-      id: '4',
-      name: 'Laura Fernández',
-      avatar: 'LF',
-      assignedLeads: 10,
-      activeLeads: 5,
-      converted: 8,
-      conversionRate: 38,
-      color: 'bg-[#F59E0B]',
-    },
-  ];
+  const [salesReps, setSalesReps] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    loadSalesReps();
+  }, []);
+
+  const loadSalesReps = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await getSalesReps();
+      setSalesReps(data);
+    } catch (err) {
+      setError('Error al cargar los representantes de ventas');
+      console.error('Error loading sales reps:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const unassignedLeads = [
     { id: '1', name: 'Pedro Sánchez', source: 'Instagram', score: 85 },
@@ -55,6 +36,36 @@ export default function LeadAssignment() {
     if (rate >= 30) return 'text-[#F59E0B]';
     return 'text-[#EF4444]';
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-indigo-500 border-t-transparent"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-red-50 border border-red-200 rounded-2xl p-6 shadow-md">
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-red-100 rounded-lg">
+            <Users className="w-5 h-5 text-red-600" />
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-red-800">Error al cargar vendedores</h3>
+            <p className="text-red-600">{error}</p>
+          </div>
+        </div>
+        <button 
+          onClick={loadSalesReps}
+          className="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+        >
+          Reintentar
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Plus, Mail, MessageSquare, Calendar, Play, Pause, Edit2, Trash2 } from 'lucide-react';
+import { getNurturingSequences } from '../api/leads';
 
 interface Sequence {
   id: string;
@@ -12,35 +13,27 @@ interface Sequence {
 }
 
 export default function NurturingSequences() {
-  const [sequences, setSequences] = useState<Sequence[]>([
-    {
-      id: '1',
-      name: 'Bienvenida Nuevos Leads',
-      type: 'email',
-      status: 'active',
-      steps: 5,
-      leads: 24,
-      conversion: 15,
-    },
-    {
-      id: '2',
-      name: 'Seguimiento Post-Consulta',
-      type: 'whatsapp',
-      status: 'active',
-      steps: 3,
-      leads: 12,
-      conversion: 35,
-    },
-    {
-      id: '3',
-      name: 'Reactivación Leads Fríos',
-      type: 'mixed',
-      status: 'paused',
-      steps: 4,
-      leads: 45,
-      conversion: 8,
-    },
-  ]);
+  const [sequences, setSequences] = useState<Sequence[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    loadSequences();
+  }, []);
+
+  const loadSequences = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await getNurturingSequences();
+      setSequences(data);
+    } catch (err) {
+      setError('Error al cargar las secuencias de nurturing');
+      console.error('Error loading sequences:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const getTypeIcon = (type: string) => {
     switch (type) {
@@ -86,6 +79,36 @@ export default function NurturingSequences() {
     if (conversion >= 15) return 'text-[#F59E0B]';
     return 'text-[#EF4444]';
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-indigo-500 border-t-transparent"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-red-50 border border-red-200 rounded-2xl p-6 shadow-md">
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-red-100 rounded-lg">
+            <Mail className="w-5 h-5 text-red-600" />
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-red-800">Error al cargar secuencias</h3>
+            <p className="text-red-600">{error}</p>
+          </div>
+        </div>
+        <button 
+          onClick={loadSequences}
+          className="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+        >
+          Reintentar
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

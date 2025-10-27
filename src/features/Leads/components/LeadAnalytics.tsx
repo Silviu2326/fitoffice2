@@ -1,30 +1,74 @@
+import { useState, useEffect } from 'react';
 import { TrendingUp, Users, Target, Award, Instagram, Facebook, MessageSquare } from 'lucide-react';
+import { getLeadAnalytics } from '../api/leads';
 
 export default function LeadAnalytics() {
-  const sourceData = [
-    { name: 'Instagram', value: 35, color: 'bg-[#EC4899]', icon: Instagram },
-    { name: 'WhatsApp', value: 28, color: 'bg-[#10B981]', icon: MessageSquare },
-    { name: 'Facebook', value: 18, color: 'bg-[#3B82F6]', icon: Facebook },
-    { name: 'Referidos', value: 12, color: 'bg-[#8B5CF6]', icon: Users },
-    { name: 'Otros', value: 7, color: 'bg-[#64748B]', icon: Target },
-  ];
+  const [analyticsData, setAnalyticsData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const conversionFunnel = [
-    { stage: 'Leads Capturados', count: 150, percentage: 100, color: 'bg-[#3B82F6]' },
-    { stage: 'Leads Contactados', count: 120, percentage: 80, color: 'bg-[#8B5CF6]' },
-    { stage: 'Leads Calificados', count: 75, percentage: 50, color: 'bg-[#F59E0B]' },
-    { stage: 'En Negociación', count: 45, percentage: 30, color: 'bg-[#EAB308]' },
-    { stage: 'Convertidos', count: 23, percentage: 15, color: 'bg-[#10B981]' },
-  ];
+  useEffect(() => {
+    loadAnalyticsData();
+  }, []);
 
-  const monthlyTrends = [
-    { month: 'Ene', leads: 45, converted: 8 },
-    { month: 'Feb', leads: 52, converted: 12 },
-    { month: 'Mar', leads: 68, converted: 15 },
-    { month: 'Abr', leads: 71, converted: 18 },
-    { month: 'May', leads: 85, converted: 22 },
-    { month: 'Jun', leads: 92, converted: 28 },
-  ];
+  const loadAnalyticsData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await getLeadAnalytics();
+      setAnalyticsData(data);
+    } catch (err) {
+      setError('Error al cargar los datos de analytics');
+      console.error('Error loading analytics data:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-indigo-500 border-t-transparent"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-red-50 border border-red-200 rounded-2xl p-6 shadow-md">
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-red-100 rounded-lg">
+            <TrendingUp className="w-5 h-5 text-red-600" />
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-red-800">Error al cargar analytics</h3>
+            <p className="text-red-600">{error}</p>
+          </div>
+        </div>
+        <button 
+          onClick={loadAnalyticsData}
+          className="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+        >
+          Reintentar
+        </button>
+      </div>
+    );
+  }
+
+  if (!analyticsData) {
+    return null;
+  }
+
+  const getIconComponent = (iconName: string) => {
+    switch (iconName) {
+      case 'Instagram': return Instagram;
+      case 'WhatsApp': return MessageSquare;
+      case 'Facebook': return Facebook;
+      case 'Referidos': return Users;
+      case 'Target': return Target;
+      default: return Target;
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -92,7 +136,7 @@ export default function LeadAnalytics() {
           </h3>
           <div className="space-y-4">
             {sourceData.map((source) => {
-              const Icon = source.icon;
+              const Icon = getIconComponent(source.icon);
               return (
                 <div key={source.name}>
                   <div className="flex items-center justify-between mb-2">

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Plus, Zap, Calendar, Users, Mail, MessageSquare, Toggle, Trash2 } from 'lucide-react';
+import { Plus, Zap, Calendar, Users, Mail, MessageSquare, Power, Trash2 } from 'lucide-react';
 
 interface AutomationRule {
   id: string;
@@ -143,7 +143,7 @@ export default function AutomationRules() {
                   }`}
                   title={rule.active ? 'Desactivar' : 'Activar'}
                 >
-                  <Toggle className="w-5 h-5" />
+                  <Power className="w-5 h-5" />
                 </button>
                 <button
                   onClick={() => deleteRule(rule.id)}

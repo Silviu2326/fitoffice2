@@ -1,0 +1,14 @@
+{
+  "name": "fitoffice-example-users",
+  "version": "1.0.0",
+  "description": "Script para crear usuarios de ejemplo en FitOffice",
+  "type": "module",
+  "scripts": {
+    "create-users": "node scripts/create-example-users.js",
+    "create-users-with-env": "node scripts/create-example-users.js $VITE_SUPABASE_URL $VITE_SUPABASE_ANON_KEY"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
+    "dotenv": "^16.3.1"
+  }
+}

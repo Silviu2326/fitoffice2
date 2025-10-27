@@ -5,8 +5,11 @@ import { supabase } from '../lib/supabase';
 interface AuthContextType {
   user: User | null;
   loading: boolean;
+  isDemoMode: boolean;
+  demoUser: any;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signUp: (email: string, password: string, fullName: string) => Promise<{ error: any }>;
+  signInDemo: (email: string, password: string, fullName: string, role: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
 }
 
@@ -15,6 +18,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isDemoMode, setIsDemoMode] = useState(false);
+  const [demoUser, setDemoUser] = useState<any>(null);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -56,15 +61,53 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return { error };
   };
 
+  const signInDemo = async (email: string, password: string, fullName: string, role: string) => {
+    // Simular delay de autenticación
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // Crear usuario demo simulado
+    const demoUserData = {
+      id: 'demo-user-' + Date.now(),
+      email: email,
+      user_metadata: {
+        full_name: fullName,
+        role: role
+      },
+      created_at: new Date().toISOString(),
+      app_metadata: {},
+      aud: 'authenticated',
+      role: 'authenticated'
+    };
+    
+    setDemoUser(demoUserData);
+    setIsDemoMode(true);
+    setUser(demoUserData as any);
+    
+    console.log('🎭 AuthContext: Usuario demo establecido:', demoUserData);
+    console.log('🎭 AuthContext: isDemoMode:', true);
+    console.log('🎭 AuthContext: user:', demoUserData);
+    
+    return { error: null };
+  };
+
   const signOut = async () => {
-    await supabase.auth.signOut();
+    if (isDemoMode) {
+      setDemoUser(null);
+      setIsDemoMode(false);
+      setUser(null);
+    } else {
+      await supabase.auth.signOut();
+    }
   };
 
   const value = {
     user,
     loading,
+    isDemoMode,
+    demoUser,
     signIn,
     signUp,
+    signInDemo,
     signOut,
   };
 

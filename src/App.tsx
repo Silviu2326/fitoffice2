@@ -39,7 +39,11 @@ import TareasAlertasPage from './features/TareasAlertas/pages/TareasAlertasPage'
 import ResumenGeneralPage from './features/ResumenGeneral/pages/ResumenGeneralPage';
 
 function AppContent() {
-  const { user, loading } = useAuth();
+  const { user, loading, isDemoMode } = useAuth();
+
+  console.log('🔍 AppContent: user:', user);
+  console.log('🔍 AppContent: loading:', loading);
+  console.log('🔍 AppContent: isDemoMode:', isDemoMode);
 
   if (loading) {
     return (

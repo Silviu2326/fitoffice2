@@ -1,5 +1,6 @@
-import { DragEvent, useState } from 'react';
+import { DragEvent, useState, useEffect } from 'react';
 import { Plus, MoreVertical } from 'lucide-react';
+import { getPipelineData } from '../api/leads';
 
 interface Lead {
   id: string;
@@ -17,53 +18,28 @@ interface Column {
 }
 
 export default function PipelineKanban() {
-  const [columns, setColumns] = useState<Column[]>([
-    {
-      id: 'new',
-      title: 'Nuevos',
-      color: 'bg-[#3B82F6]',
-      leads: [
-        { id: '1', name: 'Juan Pérez', email: 'juan@example.com', score: 85, value: 500 },
-        { id: '2', name: 'María García', email: 'maria@example.com', score: 65, value: 300 },
-      ],
-    },
-    {
-      id: 'contacted',
-      title: 'Contactados',
-      color: 'bg-[#8B5CF6]',
-      leads: [
-        { id: '3', name: 'Carlos Ruiz', email: 'carlos@example.com', score: 70, value: 400 },
-      ],
-    },
-    {
-      id: 'qualified',
-      title: 'Calificados',
-      color: 'bg-[#F59E0B]',
-      leads: [
-        { id: '4', name: 'Ana López', email: 'ana@example.com', score: 90, value: 600 },
-      ],
-    },
-    {
-      id: 'negotiation',
-      title: 'Negociación',
-      color: 'bg-[#EAB308]',
-      leads: [],
-    },
-    {
-      id: 'won',
-      title: 'Ganados',
-      color: 'bg-[#10B981]',
-      leads: [],
-    },
-    {
-      id: 'lost',
-      title: 'Perdidos',
-      color: 'bg-[#EF4444]',
-      leads: [],
-    },
-  ]);
-
+  const [columns, setColumns] = useState<Column[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [draggedLead, setDraggedLead] = useState<{ lead: Lead; fromColumn: string } | null>(null);
+
+  useEffect(() => {
+    loadPipelineData();
+  }, []);
+
+  const loadPipelineData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await getPipelineData();
+      setColumns(data);
+    } catch (err) {
+      setError('Error al cargar los datos del pipeline');
+      console.error('Error loading pipeline data:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleDragStart = (e: DragEvent, lead: Lead, columnId: string) => {
     setDraggedLead({ lead, fromColumn: columnId });
@@ -105,6 +81,36 @@ export default function PipelineKanban() {
   const getTotalValue = (leads: Lead[]) => {
     return leads.reduce((sum, lead) => sum + lead.value, 0);
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-indigo-500 border-t-transparent"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-red-50 border border-red-200 rounded-2xl p-6 shadow-md">
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-red-100 rounded-lg">
+            <Plus className="w-5 h-5 text-red-600" />
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-red-800">Error al cargar pipeline</h3>
+            <p className="text-red-600">{error}</p>
+          </div>
+        </div>
+        <button 
+          onClick={loadPipelineData}
+          className="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+        >
+          Reintentar
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
