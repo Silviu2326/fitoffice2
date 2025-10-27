@@ -1,0 +1,151 @@
+{
+  "modulos": [
+    {
+      "modulo": "CajaBancos",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "GastosProveedores",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "SuscripcionesCuotasRecurrentes",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "PagosPendientesMorosidad",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "FacturacionCobros",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "PanelFinancieroOverview",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "EventosRetosEspeciales",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "RecursosSalasMaterial",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "DisponibilidadTurnosStaff",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "ListaEsperaAusencias",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "ReservasOnline",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "AgendaCalendario",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "ProgramasEntreno",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "PlantillasEntrenamiento",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "AlertasRestriccionesAlimentarias",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "ListaCompraSupermercado",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "CheckinsNutricionales",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "RecetarioComidasGuardadas",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "PlantillasDieta",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "EditorDietaMealPlanner",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "DietasAsignadas",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "ProgresoRendimiento",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "AdherenciaCumplimientoEntreno",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "CheckinsEntreno",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "BibliotecaEjercicios",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "EditorEntreno",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "ListasInteligentesSegmentosGuardados",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "CampañasOutreach",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "EncuestasSatisfaccionNPSCSAT",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "GestionClientes",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "PipelineVentaKanban",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "Leads",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "ObjetivosRendimiento",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "TareasAlertas",
+      "archivoestilos": "guiaestilos.md"
+    },
+    {
+      "modulo": "ResumenGeneral",
+      "archivoestilos": "guiaestilos.md"
+    }
+  ],
+  "configuracion": {
+    "tiempo_espera": 30,
+    "modo": "secuencial",
+    "reintentos": 2
+  },
+  "descripcion": "Archivo con 35 módulos para aplicar guía de estilos a todos los módulos del sistema FitOffice"
+}
+

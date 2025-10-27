@@ -61,57 +61,60 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="flex-1 bg-slate-50">
-      <div className="bg-white border-b border-slate-200 px-8 py-6">
-        <h1 className="text-3xl font-bold text-slate-900">
+    <div className="flex-1 bg-surface">
+      {/* Header según sistema de diseño */}
+      <div className="bg-background border-b border-border px-8 py-6">
+        <h1 className="text-h1 font-bold text-text-primary">
           Bienvenido, {trainerName}
         </h1>
-        <p className="text-slate-600 mt-1">
+        <p className="text-body text-text-secondary mt-1">
           Aquí tienes un resumen de tu negocio de entrenamiento personal
         </p>
       </div>
 
       <div className="p-8">
+        {/* Cards de estadísticas con sistema de diseño */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {stats.map((stat) => {
             const Icon = stat.icon;
             return (
               <div
                 key={stat.title}
-                className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow"
+                className="card-base card-hover"
               >
                 <div className="flex items-center justify-between mb-4">
-                  <div className={`${stat.bgColor} p-3 rounded-lg`}>
-                    <Icon className={`w-6 h-6 ${stat.textColor}`} />
+                  <div className={`${stat.bgColor} p-3 rounded-lg shadow-sm`}>
+                    <Icon className={`w-icon-lg h-icon-lg ${stat.textColor}`} />
                   </div>
                 </div>
-                <h3 className="text-slate-600 text-sm font-medium mb-1">
+                <h3 className="text-text-secondary text-body-small font-medium mb-1">
                   {stat.title}
                 </h3>
-                <p className="text-3xl font-bold text-slate-900">{stat.value}</p>
+                <p className="text-display font-bold text-text-primary">{stat.value}</p>
               </div>
             );
           })}
         </div>
 
+        {/* Sección de próximas sesiones y actividad */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-            <h2 className="text-xl font-bold text-slate-900 mb-4">
+          <div className="card-base">
+            <h2 className="text-h3 font-bold text-text-primary mb-4">
               Próximas Sesiones
             </h2>
-            <div className="text-center py-12 text-slate-400">
+            <div className="text-center py-12 text-text-muted">
               <Calendar className="w-12 h-12 mx-auto mb-3 opacity-50" />
-              <p>No hay sesiones programadas</p>
+              <p className="text-body-small">No hay sesiones programadas</p>
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-            <h2 className="text-xl font-bold text-slate-900 mb-4">
+          <div className="card-base">
+            <h2 className="text-h3 font-bold text-text-primary mb-4">
               Actividad Reciente
             </h2>
-            <div className="text-center py-12 text-slate-400">
+            <div className="text-center py-12 text-text-muted">
               <TrendingUp className="w-12 h-12 mx-auto mb-3 opacity-50" />
-              <p>No hay actividad reciente</p>
+              <p className="text-body-small">No hay actividad reciente</p>
             </div>
           </div>
         </div>

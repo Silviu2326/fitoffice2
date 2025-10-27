@@ -1,0 +1,152 @@
+{
+  "modulos": [
+    {
+      "modulo": "CajaBancos",
+      "archivo_md": "💰 Caja & Bancos.md"
+    },
+    {
+      "modulo": "GastosProveedores",
+      "archivo_md": "💸 Gastos & Proveedores.md"
+    },
+    {
+      "modulo": "SuscripcionesCuotasRecurrentes",
+      "archivo_md": "🔄 Suscripciones & Cuotas Recurrentes.md"
+    },
+    {
+      "modulo": "PagosPendientesMorosidad",
+      "archivo_md": "⚠️ Pagos Pendientes & Morosidad.md"
+    },
+    {
+      "modulo": "FacturacionCobros",
+      "archivo_md": "🧾 Facturación & Cobros.md"
+    },
+    {
+      "modulo": "PanelFinancieroOverview",
+      "archivo_md": "📊 Panel Financiero & Overview.md"
+    },
+    {
+      "modulo": "EventosRetosEspeciales",
+      "archivo_md": "🎯 Eventos & Retos Especiales.md"
+    },
+    {
+      "modulo": "RecursosSalasMaterial",
+      "archivo_md": "🏋️ Recursos, Salas & Material.md"
+    },
+    {
+      "modulo": "DisponibilidadTurnosStaff",
+      "archivo_md": "📅 Disponibilidad & Turnos Staff.md"
+    },
+    {
+      "modulo": "ListaEsperaAusencias",
+      "archivo_md": "⏳ Lista de Espera & Ausencias.md"
+    },
+    {
+      "modulo": "ReservasOnline",
+      "archivo_md": "🌐 Reservas Online.md"
+    },
+    {
+      "modulo": "AgendaCalendario",
+      "archivo_md": "📆 Agenda & Calendario.md"
+    },
+    {
+      "modulo": "ProgramasEntreno",
+      "archivo_md": "💪 Programas de Entreno.md"
+    },
+    {
+      "modulo": "PlantillasEntrenamiento",
+      "archivo_md": "📋 Plantillas de Entrenamiento.md"
+    },
+    {
+      "modulo": "AlertasRestriccionesAlimentarias",
+      "archivo_md": "🚨 Alertas & Restricciones Alimentarias.md"
+    },
+    {
+      "modulo": "ListaCompraSupermercado",
+      "archivo_md": "🛒 Lista de la Compra & Supermercado.md"
+    },
+    {
+      "modulo": "CheckinsNutricionales",
+      "archivo_md": "📸 Check-ins Nutricionales.md"
+    },
+    {
+      "modulo": "RecetarioComidasGuardadas",
+      "archivo_md": "🍽️ Recetario & Comidas Guardadas.md"
+    },
+    {
+      "modulo": "PlantillasDieta",
+      "archivo_md": "📝 Plantillas de Dieta.md"
+    },
+    {
+      "modulo": "EditorDietaMealPlanner",
+      "archivo_md": "🥗 Editor de Dieta & Meal Planner.md"
+    },
+    {
+      "modulo": "DietasAsignadas",
+      "archivo_md": "✅ Dietas Asignadas.md"
+    },
+    {
+      "modulo": "ProgresoRendimiento",
+      "archivo_md": "📈 Progreso & Rendimiento.md"
+    },
+    {
+      "modulo": "AdherenciaCumplimientoEntreno",
+      "archivo_md": "✔️ Adherencia & Cumplimiento de Entreno.md"
+    },
+    {
+      "modulo": "CheckinsEntreno",
+      "archivo_md": "📷 Check-ins de Entreno.md"
+    },
+    {
+      "modulo": "BibliotecaEjercicios",
+      "archivo_md": "📚 Biblioteca de Ejercicios.md"
+    },
+    {
+      "modulo": "EditorEntreno",
+      "archivo_md": "✏️ Editor de Entreno.md"
+    },
+    {
+      "modulo": "ListasInteligentesSegmentosGuardados",
+      "archivo_md": "🎲 Listas Inteligentes & Segmentos Guardados.md"
+    },
+    {
+      "modulo": "CampañasOutreach",
+      "archivo_md": "📢 Campañas & Outreach.md"
+    },
+    {
+      "modulo": "EncuestasSatisfaccionNPSCSAT",
+      "archivo_md": "📊 Encuestas & Satisfacción NPS/CSAT.md"
+    },
+    {
+      "modulo": "GestionClientes",
+      "archivo_md": "👥 Gestión de Clientes.md"
+    },
+    {
+      "modulo": "PipelineVentaKanban",
+      "archivo_md": "🔀 Pipeline de Venta Kanban.md"
+    },
+    {
+      "modulo": "Leads",
+      "archivo_md": "🎯 Leads.md"
+    },
+    {
+      "modulo": "ObjetivosRendimiento",
+      "archivo_md": "🎯 Objetivos & Rendimiento.md"
+    },
+    {
+      "modulo": "TareasAlertas",
+      "archivo_md": "📋 Tareas & Alertas.md"
+    },
+    {
+      "modulo": "ResumenGeneral",
+      "archivo_md": "🏠 Resumen General.md"
+    }
+  ],
+  "configuracion": {
+    "tiempo_espera": 30,
+    "modo": "secuencial",
+    "reintentos": 2
+  },
+  "descripcion": "Archivo con 35 módulos de páginas individuales para FitOffice - Sistema de gestión fitness integral"
+}
+
+

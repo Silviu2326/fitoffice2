@@ -1,3 +1,231 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  /* Reset y estilos base */
+  * {
+    @apply box-border;
+  }
+
+  html {
+    @apply antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-text-primary font-sans;
+    font-feature-settings: 'cv11', 'ss01';
+    font-variation-settings: 'opsz' 32;
+  }
+
+  /* Tipografía base */
+  h1 {
+    @apply text-h1;
+  }
+
+  h2 {
+    @apply text-h2;
+  }
+
+  h3 {
+    @apply text-h3;
+  }
+
+  p {
+    @apply text-body;
+  }
+}
+
+@layer components {
+  /* Botones según la guía de estilos */
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-lg text-body font-semibold;
+    @apply bg-primary text-white shadow-md transition-all duration-normal;
+    @apply hover:bg-primary-600 hover:shadow-lg hover:-translate-y-0.5;
+    @apply active:bg-primary-700 active:scale-98;
+    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-lg text-body font-semibold;
+    @apply bg-surface text-text-primary border border-border shadow-sm transition-all duration-normal;
+    @apply hover:bg-surface-2 hover:border-primary;
+    @apply active:bg-border;
+    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-lg text-body font-semibold;
+    @apply bg-transparent text-primary transition-all duration-normal;
+    @apply hover:bg-primary-50;
+    @apply active:bg-primary-100;
+    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-destructive {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-lg text-body font-semibold;
+    @apply bg-error text-white shadow-md transition-all duration-normal;
+    @apply hover:bg-error-dark hover:shadow-lg hover:-translate-y-0.5;
+    @apply active:scale-98;
+    @apply focus:outline-none focus:ring-2 focus:ring-error focus:ring-offset-2;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none;
+  }
+
+  /* Tamaños de botones */
+  .btn-sm {
+    @apply px-3 py-1.5 text-body-small;
+  }
+
+  .btn-lg {
+    @apply px-6 py-3 text-body-large;
+  }
+
+  /* Inputs según la guía */
+  .input-base {
+    @apply w-full px-3 py-2 rounded-lg border border-border bg-background text-text-primary;
+    @apply transition-all duration-fast;
+    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary;
+    @apply placeholder:text-text-muted;
+    @apply disabled:bg-surface disabled:text-text-muted disabled:cursor-not-allowed;
+  }
+
+  .input-lg {
+    @apply h-12 px-3;
+  }
+
+  .input-md {
+    @apply h-10 px-3;
+  }
+
+  .input-sm {
+    @apply h-8 px-2 text-body-small;
+  }
+
+  .input-error {
+    @apply border-error focus:ring-error focus:border-error;
+  }
+
+  /* Cards según la guía */
+  .card-base {
+    @apply bg-background border border-border rounded-xl shadow-md p-6;
+    @apply transition-all duration-normal;
+  }
+
+  .card-hover {
+    @apply hover:shadow-lg hover:-translate-y-0.5;
+  }
+
+  /* Chips & Tags */
+  .chip-base {
+    @apply inline-flex items-center px-4 py-2 rounded-full text-body-small;
+    @apply bg-surface-2 text-text-secondary transition-all duration-fast;
+  }
+
+  .chip-selected {
+    @apply bg-primary-50 text-primary border border-primary;
+  }
+
+  /* Badges */
+  .badge-base {
+    @apply inline-flex items-center px-2 py-0.5 rounded-md text-caption font-medium;
+  }
+
+  .badge-success {
+    @apply bg-success-light text-success;
+  }
+
+  .badge-warning {
+    @apply bg-warning-light text-warning;
+  }
+
+  .badge-error {
+    @apply bg-error-light text-error;
+  }
+
+  .badge-info {
+    @apply bg-info-light text-info;
+  }
+}
+
+@layer utilities {
+  /* Scrollbar personalizado según el sistema de diseño */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-surface rounded;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-border rounded;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-text-muted;
+  }
+
+  /* Animaciones personalizadas */
+  .animate-shimmer {
+    animation: shimmer 2s infinite;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(99, 102, 241, 0.1) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  /* Elevación (sombras) */
+  .elevation-sm {
+    @apply shadow-sm;
+  }
+
+  .elevation-md {
+    @apply shadow-md;
+  }
+
+  .elevation-lg {
+    @apply shadow-lg;
+  }
+
+  .elevation-xl {
+    @apply shadow-xl;
+  }
+
+  .elevation-2xl {
+    @apply shadow-2xl;
+  }
+
+  /* Utilidades de transición */
+  .transition-fast {
+    @apply transition-all duration-fast ease-out;
+  }
+
+  .transition-normal {
+    @apply transition-all duration-normal ease-out;
+  }
+
+  .transition-slow {
+    @apply transition-all duration-slow ease-out;
+  }
+}

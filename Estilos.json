@@ -1,0 +1,21 @@
+{
+    "modulos": [
+  
+      {
+        "modulo": "PresupuestosConsentimientosFirmar",
+        "archivoestilos": "guiaestilos.md"
+      },
+      {
+        "modulo": "PagosFinanciacionPortalPaciente",
+        "archivoestilos": "guiaestilos.md"
+      }
+    ],
+    "configuracion": {
+      "tiempo_espera": 30,
+      "modo": "secuencial",
+      "reintentos": 2
+    },
+    "descripcion": "Archivo con 67 módulos para aplicar guía de estilos a todos los módulos del sistema dental"
+  }
+  
+  
